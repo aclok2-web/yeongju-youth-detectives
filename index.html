@@ -531,7 +531,7 @@ a{color:var(--blue);text-underline-offset:3px}@media(max-width:520px){.person p{
     const normalized=input.value.trim().replace(/\s+/g,' ');
     const valid=normalized==='카페 알바 지원';
     send.disabled=!valid;
-    hint.textContent=valid?'전송할 수 있습니다.':'문자에 적힌 지원 문구를 정확히 입력하세요.';
+    hint.textContent=valid?'전송할 수 있습니다.':'카페 알바 지원이라고 입력하세요.';
     hint.className=valid?'sms-hint ready':'sms-hint';
   }
 
@@ -570,14 +570,14 @@ a{color:var(--blue);text-underline-offset:3px}@media(max-width:520px){.person p{
     const overlay=document.createElement('section');
     overlay.id='season1SmsIntro';overlay.className='sms-intro';
     overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');
-    overlay.innerHTML=`<div class="sms-phone"><div class="sms-image-wrap"><img src="${SMS_IMAGE}" alt="카페 아르바이트 모집 문자 메시지"></div><div class="sms-reply"><div class="sms-task"><b>지원 문자를 직접 입력하세요</b><span>문자에 안내된 지원 문구를 입력해야 수사가 시작됩니다.</span></div><div class="sms-input-row"><input id="season1SmsReply" type="text" inputmode="text" autocomplete="off" aria-label="문자 답장" placeholder="답장 입력" maxlength="30"><button id="season1SmsSend" disabled>전송</button></div><div id="season1SmsHint" class="sms-hint">문자에 적힌 지원 문구를 정확히 입력하세요.</div><button class="sms-cancel" type="button">체험 취소</button></div></div>`;
+    overlay.innerHTML=`<div class="sms-phone"><div class="sms-image-wrap"><img src="${SMS_IMAGE}" alt="카페 아르바이트 모집 문자 메시지"></div><div id="season1ReplyPanel" class="sms-reply" style="display:none"><div class="sms-task"><b>지원 문자를 직접 입력하세요</b><span>카페 알바 지원이라고 입력하세요.</span></div><div class="sms-input-row"><input id="season1SmsReply" type="text" inputmode="text" autocomplete="off" aria-label="문자 답장" placeholder="답장 입력" maxlength="30"><button id="season1SmsSend" disabled>전송</button></div><div id="season1SmsHint" class="sms-hint">카페 알바 지원이라고 입력하세요.</div><button class="sms-cancel" type="button">체험 취소</button></div></div>`;
     document.body.appendChild(overlay);
     overlay.querySelector('#season1SmsReply').addEventListener('input',validate);
     overlay.querySelector('#season1SmsReply').addEventListener('keydown',e=>{if(e.key==='Enter')startSeason()});
     overlay.querySelector('#season1SmsSend').addEventListener('click',startSeason);
     overlay.querySelector('.sms-cancel').addEventListener('click',closeIntro);
     requestAnimationFrame(()=>overlay.classList.add('arrived'));
-    notify();setTimeout(()=>overlay.querySelector('#season1SmsReply').focus(),500);
+    notify();setTimeout(()=>{const panel=overlay.querySelector('#season1ReplyPanel');if(!panel)return;panel.style.display='block';panel.classList.add('ready');const input=overlay.querySelector('#season1SmsReply');if(input)input.focus()},4000);
   }
 
   window.enter=function(n){if(Number(n)===1){openIntro();return}originalEnter(n)};
